@@ -146,8 +146,6 @@ _**参考资料：**_
 4. [**https://zh.wikipedia.org/wiki/IEEE\_754**](https://zh.wikipedia.org/wiki/IEEE_754)
 5. [https://en.wikipedia.org/wiki/Kahan\_summation\_algorithm](https://en.wikipedia.org/wiki/Kahan_summation_algorithm)
 
-![&#x5FAE;&#x4FE1;&#x626B;&#x4E00;&#x626B;&#x4E0A;&#x65B9;&#x4E8C;&#x7EF4;&#x7801;&#xFF0C;&#x5173;&#x6CE8;&#x6211;&#x7684;&#x516C;&#x4F17;&#x53F7;&#xFF1A;&#x738B;&#x867E;&#x7247;](.gitbook/assets/wei-xin-gong-zhong-hao-er-wei-ma-.jpg)
-
 {% hint style="info" %}
 _发布时间：2021年 2 月 5 日_
 {% endhint %}
