@@ -1,8 +1,6 @@
 # Welcome！
 
-你好！欢迎来到我的博客。我主要是在这里分享计算机相关的技术。
-
-我还有一个每日分享的站点，那里是我记录每天的学习心得的地方，内容比较零碎，有兴趣的话你也可以去瞄一眼~地址如下：[https://dailysharing.supermouse.cn/](https://dailysharing.supermouse.cn/)
+你好！欢迎来到我的博客。我主要是在这里分享计算机相关的技术。我还有一个每日分享的站点，那里是我记录每天的学习心得的地方，内容比较零碎，有兴趣的话你也可以去瞄一眼~地址如下：[https://dailysharing.supermouse.cn/](https://dailysharing.supermouse.cn/)
 
 也欢迎你关注我的微信公众号：王虾片，我的博客会同步发布到微信公众号上，方便你在手机上阅读。
 
