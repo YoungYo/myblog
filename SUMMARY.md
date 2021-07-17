@@ -9,6 +9,7 @@
 
 ## LeetCode合集
 
+* [92. Reverse Linked List II](leetcode-he-ji/92.-reverse-linked-list-ii.md)
 * [198. House Robber](leetcode-he-ji/198.-house-robber.md)
 * [199. Binary Tree Right Side View](leetcode-he-ji/199.-binary-tree-right-side-view.md)
 
