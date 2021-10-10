@@ -223,11 +223,11 @@ s.close()
 
 A 发送给 B 的消息能够正常送达。
 
-![A ](broken-reference)
+![A 与 B 正常通信](broken-reference)
 
 在主机 B 上运行 send_arp 之后，A 的 ARP 缓存发生了变化：
 
-![](file:///C:/Users/supermouse/Downloads/ARP%E6%AC%BA%E9%AA%97/2019-12-14\_211301.png?lastModify=1633872719)
+![](broken-reference)
 
 而且 A 发送给 B 的消息也无法送达了。
 
