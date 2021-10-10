@@ -73,7 +73,7 @@ A 收到 B 的 ARP 应答后，知道了 B 的 MAC 地址，就可以给 B 发�
 
 首先是发送 ARP 应答的代码：
 
-```c
+```
 //Filename: send_arp.c
 #include <stdio.h>
 #include <ctype.h>
@@ -116,7 +116,7 @@ struct arp_packet {
 
 void die(char*);
 void get_ip_addr(struct in_addr*, char*);
-void get_hw_addr(char*, char*);
+void get_hw_addr(char*, char;
 
 int main(int argc, char** argv)
 {
@@ -227,15 +227,19 @@ void get_hw_addr(char* buf,char* str){
 
 首先写一个 UDP 的客户端，运行在 A 上，负责发送数据：
 
-```
-// Some code
+```python
+#我的 Windows 系统上安装的是 Python3，所以这个 UDP 的客户端是用 Python3 写的
+
+import socket
+
+address = ('192.168.133.140', 31500)
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+msg = input()
+s.sendto(msg.encode('utf-8'), address)
+s.close()
 ```
 
-```
- #我的 Windows 系统上安装的是 Python3，所以这个 UDP 的客户端是用 Python3 写的 ​ import socket ​ address = ('192.168.133.140', 31500) s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) msg = input() s.sendto(msg.encode('utf-8'), address) s.close()
-```
-
-然后写一个 UDP 的服务端，运行在 B 和 C 上，负责接收数据：
+然后写一个 UDP 的服务端，运行在 B 和 C 上，负责接收数
 
 ```
  #!/usr/bin/python #这个是在 CentOS 上运行的，CentOS默认安装了 Python2，没有安装 Python3（我懒得安装了），所以就用 Python2 写了这个 UDP 服务端 ​ import socket ​ address = ('', 31500) s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) s.bind(address) ​ while True:     data, addr = s.recvfrom(2048)     if not data:         print "client has exist"         break     print "received:", data, "from", addr s.close()
