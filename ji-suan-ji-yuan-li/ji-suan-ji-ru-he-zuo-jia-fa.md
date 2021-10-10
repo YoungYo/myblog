@@ -152,11 +152,10 @@ public class TestCLA {
 **参考资料：**
 
 * [https://time.geekbang.org/column/article/95883](https://time.geekbang.org/column/article/95883)
-* [https://en.wikipedia.org/wiki/Carry-lookahead\_adder](https://en.wikipedia.org/wiki/Carry-lookahead_adder)
+* [https://en.wikipedia.org/wiki/Carry-lookahead_adder](https://en.wikipedia.org/wiki/Carry-lookahead_adder)
 
 _本文部分图片来自网络，如有侵权，请联系作者删除_
 
 {% hint style="info" %}
 _发布时间：2020 年 12 月 20 日_
 {% endhint %}
-

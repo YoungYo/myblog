@@ -1,12 +1,12 @@
 # GitBook 入门指南
 
-GitBook 是一款现代化的文档平台，支持团队协作，可以在上面写产品文档、内部知识分享、接口文档等。GitBook 有网页版和本地版两种，网页版地址如下：[https://www.gitbook.com/](https://www.gitbook.com/)，本地版地址如下：[https://github.com/GitbookIO/gitbook](https://github.com/GitbookIO/gitbook)。
+GitBook 是一款现代化的文档平台，支持团队协作，可以在上面写产品文档、内部知识分享、接口文档等。GitBook 有网页版和本地版两种，网页版地址如下：[https://www.gitbook.com/](https://www.gitbook.com)，本地版地址如下：[https://github.com/GitbookIO/gitbook](https://github.com/GitbookIO/gitbook)。
 
 本地版是基于 Node.js 开发的，所以需要本地安装 Node.js 环境，本地版现已停止维护了，而且本地版的大部分功能网页版都支持，所以本教程主要是介绍网页版的使用方式。
 
 GitBook 和 GitHub 是什么关系呢？这是两个相互独立的网站，但是你在 GitBook 上创建的文档可以同步到 GitHub 仓库，每次对文档的修改都会生成一个 commit，GitBook 会自动帮你提交到 GitHub，这样有助于追溯历史版本。而你往 GitHub 提交的内容也会自动同步到 GitBook。（具体怎么在 GitBook 和 GitHub 之间建立关联一会儿会讲到，但是在这之前，我假设你已经会使用 GitHub 了，如果你没有，可以点击下方的链接获取相关教程。）
 
-{% file src="../.gitbook/assets/cong-0-kai-shi-xue-xi-github.pdf" %}
+{% file src="../.gitbook/assets/从0开始学习GitHub.pdf" %}
 
 ## 注册 GitBook 账号
 
@@ -153,7 +153,7 @@ GitBook 的 space 相当于 GitHub 的 repository，即仓库，两者可以互�
 
 第一步：对 SUMMARY.md 的内容做如下修改：
 
-```text
+```
 ### 需求文档
 
 * [需求文档1](xu-qiu-wen-dang/xu-qiu-wen-dang-1.md)
@@ -193,9 +193,8 @@ Variant 也是 GitBook 中一个很重要的概念，相当于 GitHub 仓库中�
 
 ## 参考资料
 
-1. [https://docs.gitbook.com/](https://docs.gitbook.com/)
+1. [https://docs.gitbook.com/](https://docs.gitbook.com)
 
 欢迎关注我的微信公众号，扫描下方二维码或微信搜索：王虾片，就可以找到我，我会持续为你分享 IT 技术。
 
 ![](https://tva1.sinaimg.cn/large/008eGmZEly1gnh1zyp9lvj3076076aak.jpg)
-
