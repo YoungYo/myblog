@@ -19,7 +19,7 @@ ARP（英文：Address Resolution Protocol），翻译成中文是「地址解�
 
 现在 A 想给 B 发一条消息，此时 A 只知道 B 的 IP 地址，不知道 B 的 MAC 地址，它就会向局域网中广播一条 ARP 请求消息，询问 B 的 MAC 地址。这相当于 A 在局域网中喊：谁知道 192.168.133.140 的 MAC 地址？知道的话告诉我一声。虽然局域网中其他主机都会收到这条消息，但是其他主机一看自己的 IP 地址不是 192.168.133.140，就不会搭理 A，只有 B 收到了这条消息后发现 A 是在询问自己的 MAC 地址，于是就会给 A 发送一条 ARP 应答消息，告诉 A 自己的 MAC 地址是 00:0C:29:B6:1E:5E。
 
-![ARP 请求（广播）](<../.gitbook/assets/ARP请求 (1).png>)
+![ARP 请求（广播）](<../.gitbook/assets/ARP请求.png>)
 
 ![ARP 应答（单播）](../.gitbook/assets/ARP应答.png)
 
