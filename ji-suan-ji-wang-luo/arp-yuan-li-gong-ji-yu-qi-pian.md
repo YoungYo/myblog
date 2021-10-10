@@ -6,7 +6,7 @@
 
 ## 什么是 ARP 协议？
 
-在同一个局域网中， 一个主机要想给另外一个主机发送消息，必须知道目标主机的 MAC 地址，但是在 TCP/IP 协议中，网络层和传输层只关心目标主机的 IP 地址，换言之，数据链路层拿到的报文中只包含目标主机的 IP 地址，他必须根据目标主机的 IP 地址找到相应的 MAC 地址，然后![](broken-reference)将消息发送出去。这个时候就需要用到 ARP 协议了。
+在同一个局域网中， 一个主机要想给另外一个主机发送消息，必须知道目标主机的 MAC 地址，但是在 TCP/IP 协议中，网络层和传输层只关心目标主机的 IP 地址，换言之，数据链路层拿到的报文中只包含目标主机的 IP 地址，他必须根据目标主机的 IP 地址找到相应的 MAC 地址，然后将消息发送出去。这个时候就需要用到 ARP 协议了。
 
 ARP（英文：Address Resolution Protocol），翻译成中文是「地址解析协议」，是根据 IP 地址获取 MAC 地址的网络传输协议。现在我们假设局域网中有三台主机 A、B、C，他们的 IP 地址和 MAC 地址分别如下表所示：
 
@@ -19,7 +19,7 @@ ARP（英文：Address Resolution Protocol），翻译成中文是「地址解�
 
 现在 A 想给 B 发一条消息，此时 A 只知道 B 的 IP 地址，不知道 B 的 MAC 地址，它就会向局域网中广播一条 ARP 请求消息，询问 B 的 MAC 地址。这相当于 A 在局域网中喊：谁知道 192.168.133.140 的 MAC 地址？知道的话告诉我一声。虽然局域网中其他主机都会收到这条消息，但是其他主机一看自己的 IP 地址不是 192.168.133.140，就不会搭理 A，只有 B 收到了这条消息后发现 A 是在询问自己的 MAC 地址，于是就会给 A 发送一条 ARP 应答消息，告诉 A 自己的 MAC 地址是 00:0C:29:B6:1E:5E。
 
-![ARP请求](file:///C:/Users/supermouse/Downloads/ARP%E6%AC%BA%E9%AA%97/ARP%E8%AF%B7%E6%B1%82.png?lastModify=1633872719)
+![ARP ](broken-reference)
 
 ![ARP应答](file:///C:/Users/supermouse/Downloads/ARP%E6%AC%BA%E9%AA%97/ARP%E5%BA%94%E7%AD%94.png?lastModify=1633872719)
 
