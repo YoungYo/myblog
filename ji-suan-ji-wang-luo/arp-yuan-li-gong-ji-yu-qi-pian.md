@@ -239,11 +239,11 @@ A 发送给 B 的消息能够正常送达。
 
 主机接收消息时，正好反过来，是从下往上接收。网络接口层最先收到消息，然后他会验证消息头的目标 MAC 地址是否是本机的 MAC 地址，如果是，就将消息发送给上一层，也就是网际层。网际层收到消息后，会验证目标 IP 地址是否是本机的 IP 地址，如果是，就将消息发送给传输层，否则就丢弃。
 
-![](broken-reference)
+![TCPIP 四层网络模型](broken-reference)
 
 C 接受到的 A 发送过来的消息结构大概是这样的：
 
-![](file:///C:/Users/supermouse/Downloads/ARP%E6%AC%BA%E9%AA%97/C%E6%94%B6%E5%88%B0%E7%9A%84%E6%B6%88%E6%81%AF%E6%A0%BC%E5%BC%8F.png?lastModify=1633872719)
+![C 收到的消息格式](broken-reference)
 
 当这个消息经过网际层的时候，网际层发现这个消息的目标 IP 地址是 192.168.133.140，而当前主机的 IP 地址是 192.168.133.141，所以就把这个消息丢弃了。我们用 Python 写的 UDP 服务端是工作于应用层的程序，应用层的数据来自传输层，但是数据在网际层就被丢弃了，所以没有显示出来。
 
@@ -251,8 +251,86 @@ C 接受到的 A 发送过来的消息结构大概是这样的：
 
 既然应用层程序接收不到数据，我们就要用原始套接字直接接收网络接口层的数据，然后再从中解析有用的数据。下面是接收数据程序代码：
 
-```
- //Filename: recv.c #include <stdio.h> #include <netinet/in.h> #include <sys/socket.h> #include <netinet/ether.h>   #define IP_ADDR_LEN 4 ​ unsigned char src_ip_addr[IP_ADDR_LEN] = {192, 168, 133, 1}; unsigned char dst_ip_addr[IP_ADDR_LEN] = {192, 168, 133, 140}; ​ void print_ip_addr(char*); int ipcmp(char*, char*); int main(int argc,char *argv[]) {     unsigned char buf[1024] = {0};     //初始化原始套接字     int sock_raw_fd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ALL));     printf("sock_fd: %d\n", sock_raw_fd);      if (sock_raw_fd < 0)         return -1;     //获取链路层的数据包     while(1){         int len = recvfrom(sock_raw_fd, buf, sizeof(buf), 0, NULL, NULL);         if (len == -1)             break;         //如果第 24 个字节是 0x11，说明是 UDP 报文         if (len >= 24 && buf[23] == 0x11){             //获取报文中的源 IP 地址和目标 IP 地址。与我们要拦截的 IP 地址进行对比             if (ipcmp(buf+26, src_ip_addr) == 0 && ipcmp(buf+30, dst_ip_addr) == 0){                 printf("Length = %d\n", len);                 printf("Received:\n");                 int i = 0;                 while (len > i){                     printf("%x ", buf[i]);                     if (i % 8 == 7) printf("  ");                     if (i % 16 == 15) printf("\n");                     i++;                 }                 printf("\n");                 printf("Source: ");                 print_ip_addr(buf+26);                 printf("Destination: ");                 print_ip_addr(buf+30);                 printf("UDP data: ");                 //打印消息体                 i = 42;                 while (len > i){                     printf("%c", buf[i]);                     i++;                 }                 printf("\n\n");             }         }     }     return 0; } ​ void print_ip_addr(char* buf){     int i = 0;     for (i = 0; i < IP_ADDR_LEN; ++i) {         printf("%d", buf[i] & 0x000000ff);         if (i+1 != IP_ADDR_LEN){             printf(".");         } else {             printf("\n");         }     } } ​ int ipcmp(char* buf, char* ip_addr){     int i = 0;     for (i = 0; i < IP_ADDR_LEN; ++i) {         if (buf[i] != ip_addr[i]){             return -1;         }     }     return 0; }
+```c
+//Filename: recv.c
+#include <stdio.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <netinet/ether.h>
+ 
+#define IP_ADDR_LEN 4
+
+unsigned char src_ip_addr[IP_ADDR_LEN] = {192, 168, 133, 1};
+unsigned char dst_ip_addr[IP_ADDR_LEN] = {192, 168, 133, 140};
+
+void print_ip_addr(char*);
+int ipcmp(char*, char*);
+int main(int argc,char *argv[])
+{
+    unsigned char buf[1024] = {0};
+    //初始化原始套接字
+    int sock_raw_fd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
+    printf("sock_fd: %d\n", sock_raw_fd); 
+    if (sock_raw_fd < 0)
+        return -1;
+    //获取链路层的数据包
+    while(1){
+        int len = recvfrom(sock_raw_fd, buf, sizeof(buf), 0, NULL, NULL);
+        if (len == -1)
+            break;
+        //如果第 24 个字节是 0x11，说明是 UDP 报文
+        if (len >= 24 && buf[23] == 0x11){
+            //获取报文中的源 IP 地址和目标 IP 地址。与我们要拦截的 IP 地址进行对比
+            if (ipcmp(buf+26, src_ip_addr) == 0 && ipcmp(buf+30, dst_ip_addr) == 0){
+                printf("Length = %d\n", len);
+                printf("Received:\n");
+                int i = 0;
+                while (len > i){
+                    printf("%x ", buf[i]);
+                    if (i % 8 == 7) printf("  ");
+                    if (i % 16 == 15) printf("\n");
+                    i++;
+                }
+                printf("\n");
+                printf("Source: ");
+                print_ip_addr(buf+26);
+                printf("Destination: ");
+                print_ip_addr(buf+30);
+                printf("UDP data: ");
+                //打印消息体
+                i = 42;
+                while (len > i){
+                    printf("%c", buf[i]);
+                    i++;
+                }
+                printf("\n\n");
+            }
+        }
+    }
+    return 0;
+}
+
+void print_ip_addr(char* buf){
+    int i = 0;
+    for (i = 0; i < IP_ADDR_LEN; ++i) {
+        printf("%d", buf[i] & 0x000000ff);
+        if (i+1 != IP_ADDR_LEN){
+            printf(".");
+        } else {
+            printf("\n");
+        }
+    }
+}
+
+int ipcmp(char* buf, char* ip_addr){
+    int i = 0;
+    for (i = 0; i < IP_ADDR_LEN; ++i) {
+        if (buf[i] != ip_addr[i]){
+            return -1;
+        }
+    }
+    return 0;
+}
 ```
 
 下面是用 recv 接收数据的效果：
