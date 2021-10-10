@@ -228,6 +228,10 @@ void get_hw_addr(char* buf,char* str){
 首先写一个 UDP 的客户端，运行在 A 上，负责发送数据：
 
 ```
+// Some code
+```
+
+```
  #我的 Windows 系统上安装的是 Python3，所以这个 UDP 的客户端是用 Python3 写的 ​ import socket ​ address = ('192.168.133.140', 31500) s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) msg = input() s.sendto(msg.encode('utf-8'), address) s.close()
 ```
 
