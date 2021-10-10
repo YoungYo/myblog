@@ -47,7 +47,7 @@ A 收到 B 的 ARP 应答后，知道了 B 的 MAC 地址，就可以给 B 发�
 
 在写代码之前，我们得先知道 ARP 报文的格式。ARP 报文格式如下：
 
-![](file:///C:/Users/supermouse/Downloads/ARP%E6%AC%BA%E9%AA%97/2019-12-14\_202044.png?lastModify=1633872719)
+![ARP 报文格式](broken-reference)
 
 该报文从左到右分别是：
 
