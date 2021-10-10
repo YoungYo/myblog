@@ -219,11 +219,11 @@ s.close()
 
 在没有运行 send_arp 之前，A 的 ARP 缓存如下：
 
-![](broken-reference)
+![没有运行 send_arp 之前，A 的 ARP 缓存](broken-reference)
 
 A 发送给 B 的消息能够正常送达。
 
-![](file:///C:/Users/supermouse/Downloads/ARP%E6%AC%BA%E9%AA%97/2019-12-14\_210418.png?lastModify=1633872719)
+![A ](broken-reference)
 
 在主机 B 上运行 send_arp 之后，A 的 ARP 缓存发生了变化：
 
