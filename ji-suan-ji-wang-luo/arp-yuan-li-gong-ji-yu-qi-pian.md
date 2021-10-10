@@ -74,49 +74,6 @@ A 收到 B 的 ARP 应答后，知道了 B 的 MAC 地址，就可以给 B 发�
 首先是发送 ARP 应答的代码：
 
 ```
-//Filename: send_arp.c
-#include <stdio.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include <netdb.h>
-#include <net/if.h>// struct ifreq
-#include <sys/ioctl.h> // ioctl、SIOCGIFADDR
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <linux/if_ether.h>
-#include <netpacket/packet.h> // struct sockaddr_l
-
-
-#define ETH_HW_ADDR_LEN 6
-#define IP_ADDR_LEN 4
-#define ARP_FRAME_TYPE 0x0806
-#define ETHER_HW_TYPE 1
-#define IP_PROTO_TYPE 0x0800
-#define OP_ARP_REQUEST 2
-
-#define DEFAULT_DEVICE "eth0"
-
-struct arp_packet {
-        u_char targ_hw_addr[ETH_HW_ADDR_LEN];
-        u_char src_hw_addr[ETH_HW_ADDR_LEN];
-        u_short frame_type;
-        u_short hw_type;
-        u_short prot_type;
-        u_char hw_addr_size;
-        u_char prot_addr_size;
-        u_short op;
-        u_char sndr_hw_addr[ETH_HW_ADDR_LEN];
-        u_char sndr_ip_addr[IP_ADDR_LEN];
-        u_char rcpt_hw_addr[ETH_HW_ADDR_LEN];
-        u_char rcpt_ip_addr[IP_ADDR_LEN];
-        u_char padding[18];
-};
-
-void die(char*);
-void get_ip_addr(struct in_addr*, char*);
-void get_hw_addr(char*, char;
 
 int main(int argc, char** argv)
 {
@@ -239,10 +196,25 @@ s.sendto(msg.encode('utf-8'), address)
 s.close()
 ```
 
-然后写一个 UDP 的服务端，运行在 B 和 C 上，负责接收数
+然后写一个 UDP 的服务端，运行在 B 和 C 上，负责接收数据：
 
-```
- #!/usr/bin/python #这个是在 CentOS 上运行的，CentOS默认安装了 Python2，没有安装 Python3（我懒得安装了），所以就用 Python2 写了这个 UDP 服务端 ​ import socket ​ address = ('', 31500) s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) s.bind(address) ​ while True:     data, addr = s.recvfrom(2048)     if not data:         print "client has exist"         break     print "received:", data, "from", addr s.close()
+```python
+#!/usr/bin/python
+#这个是在 CentOS 上运行的，CentOS默认安装了 Python2，没有安装 Python3（我懒得安装了），所以就用 Python2 写了这个 UDP 服务端
+
+import socket
+
+address = ('', 31500)
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.bind(address)
+
+while True:
+    data, addr = s.recvfrom(2048)
+    if not data:
+        print "client has exist"
+        break
+    print "received:", data, "from", addr
+s.close()
 ```
 
 在没有运行 send_arp 之前，A 的 ARP 缓存如下：
