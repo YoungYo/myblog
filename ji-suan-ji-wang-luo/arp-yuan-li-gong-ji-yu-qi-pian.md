@@ -19,7 +19,7 @@ ARP（英文：Address Resolution Protocol），翻译成中文是「地址解�
 
 现在 A 想给 B 发一条消息，此时 A 只知道 B 的 IP 地址，不知道 B 的 MAC 地址，它就会向局域网中广播一条 ARP 请求消息，询问 B 的 MAC 地址。这相当于 A 在局域网中喊：谁知道 192.168.133.140 的 MAC 地址？知道的话告诉我一声。虽然局域网中其他主机都会收到这条消息，但是其他主机一看自己的 IP 地址不是 192.168.133.140，就不会搭理 A，只有 B 收到了这条消息后发现 A 是在询问自己的 MAC 地址，于是就会给 A 发送一条 ARP 应答消息，告诉 A 自己的 MAC 地址是 00:0C:29:B6:1E:5E。
 
-![ARP 请求（广播）](<../.gitbook/assets/ARP请求.png>)
+![ARP 请求（广播）](../.gitbook/assets/ARP请求.png)
 
 ![ARP 应答（单播）](../.gitbook/assets/ARP应答.png)
 
@@ -31,11 +31,11 @@ A 收到 B 的 ARP 应答后，知道了 B 的 MAC 地址，就可以给 B 发�
 
 假设现在主机 C 向 A 发送了一个 ARP 应答，告诉 A，IP 地址是 192.168.133.140（B 的 IP 地址） 的主机的 MAC 地址是 00:0C:29:80:44:D4（C 的 MAC 地址），那么 A 给 B 发送数据的时候，报文里的 MAC 地址就会写成 C 的 MAC 地址，这样一来，本来应该是发到 B 那里的消息，结果发到了 C 这里。这就是 ARP 攻击的原理。下文中如无特殊说明，A 均指数据发送者，B 均指数据接收者，C 均指攻击者。
 
-![](file:///C:/Users/supermouse/Downloads/ARP%E6%AC%BA%E9%AA%97/ARP%E6%94%BB%E5%87%BB.png?lastModify=1633872719)
+![](broken-reference)
 
 ## ARP 欺骗
 
-## ARP 攻击实战
+## 实战
 
 ### 前期准备
 
@@ -161,4 +161,4 @@ C 接受到的 A 发送过来的消息结构大概是这样的：
 3. [Linux网络编程——原始套接字编程](https://blog.csdn.net/tennysonsky/article/details/44676377)
 4. [https://www.bilibili.com/video/BV147411h7dN?p=69](https://www.bilibili.com/video/BV147411h7dN?p=69)
 
-\
+\\
