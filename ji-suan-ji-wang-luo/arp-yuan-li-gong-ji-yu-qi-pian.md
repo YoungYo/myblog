@@ -73,7 +73,50 @@ A 收到 B 的 ARP 应答后，知道了 B 的 MAC 地址，就可以给 B 发�
 
 首先是发送 ARP 应答的代码：
 
-```
+```c
+//Filename: send_arp.c
+#include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include <netdb.h>
+#include <net/if.h>// struct ifreq
+#include <sys/ioctl.h> // ioctl、SIOCGIFADDR
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <linux/if_ether.h>
+#include <netpacket/packet.h> // struct sockaddr_l
+
+
+#define ETH_HW_ADDR_LEN 6
+#define IP_ADDR_LEN 4
+#define ARP_FRAME_TYPE 0x0806
+#define ETHER_HW_TYPE 1
+#define IP_PROTO_TYPE 0x0800
+#define OP_ARP_REQUEST 2
+
+#define DEFAULT_DEVICE "eth0"
+
+struct arp_packet {
+        u_char targ_hw_addr[ETH_HW_ADDR_LEN];
+        u_char src_hw_addr[ETH_HW_ADDR_LEN];
+        u_short frame_type;
+        u_short hw_type;
+        u_short prot_type;
+        u_char hw_addr_size;
+        u_char prot_addr_size;
+        u_short op;
+        u_char sndr_hw_addr[ETH_HW_ADDR_LEN];
+        u_char sndr_ip_addr[IP_ADDR_LEN];
+        u_char rcpt_hw_addr[ETH_HW_ADDR_LEN];
+        u_char rcpt_ip_addr[IP_ADDR_LEN];
+        u_char padding[18];
+};
+
+void die(char*);
+void get_ip_addr(struct in_addr*, char*);
+void get_hw_addr(char*, char*);
 
 int main(int argc, char** argv)
 {
@@ -357,4 +400,3 @@ int ipcmp(char* buf, char* ip_addr){
 3. [Linux网络编程——原始套接字编程](https://blog.csdn.net/tennysonsky/article/details/44676377)
 4. [https://www.bilibili.com/video/BV147411h7dN?p=69](https://www.bilibili.com/video/BV147411h7dN?p=69)
 
-\\
