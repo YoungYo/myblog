@@ -335,7 +335,7 @@ int ipcmp(char* buf, char* ip_addr){
 
 下面是用 recv 接收数据的效果：
 
-![](file:///C:/Users/supermouse/Downloads/ARP%E6%AC%BA%E9%AA%97/2019-12-15\_004108.png?lastModify=1633872719)
+![主机 C 接收](broken-reference)
 
 ## 结语
 
