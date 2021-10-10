@@ -21,7 +21,7 @@ ARP（英文：Address Resolution Protocol），翻译成中文是「地址解�
 
 ![ARP 请求（广播）](broken-reference)
 
-![ARP 应答](broken-reference)
+![ARP 应答（单播）](broken-reference)
 
 A 收到 B 的 ARP 应答后，知道了 B 的 MAC 地址，就可以给 B 发送消息了。同时 A 会将 B 的MAC 地址保存下来，以便下次再给 B 发消息的时候使用，这个叫做 ARP 缓存，在 Windows 和 Linux 上都可以通过 `arp -a` 这条命令查看当前系统的 ARP 缓存。ARP 缓存有一定的有效期，不同的系统有效期不一样，过了有效期之后，当 A 需要再次给 B 发消息的时候，A 会重新广播 ARP 请求，来询问 B 的 MAC 地址。
 
