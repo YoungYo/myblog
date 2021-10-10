@@ -219,7 +219,7 @@ s.close()
 
 在没有运行 send_arp 之前，A 的 ARP 缓存如下：
 
-![](file:///C:/Users/supermouse/Downloads/ARP%E6%AC%BA%E9%AA%97/2019-12-14\_210821.png?lastModify=1633872719)
+![](broken-reference)
 
 A 发送给 B 的消息能够正常送达。
 
