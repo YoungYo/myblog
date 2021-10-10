@@ -19,9 +19,9 @@ ARP（英文：Address Resolution Protocol），翻译成中文是「地址解�
 
 现在 A 想给 B 发一条消息，此时 A 只知道 B 的 IP 地址，不知道 B 的 MAC 地址，它就会向局域网中广播一条 ARP 请求消息，询问 B 的 MAC 地址。这相当于 A 在局域网中喊：谁知道 192.168.133.140 的 MAC 地址？知道的话告诉我一声。虽然局域网中其他主机都会收到这条消息，但是其他主机一看自己的 IP 地址不是 192.168.133.140，就不会搭理 A，只有 B 收到了这条消息后发现 A 是在询问自己的 MAC 地址，于是就会给 A 发送一条 ARP 应答消息，告诉 A 自己的 MAC 地址是 00:0C:29:B6:1E:5E。
 
-![ARP 请求（广播）](broken-reference)
+![ARP 请求（广播）](<../.gitbook/assets/ARP请求 (1).png>)
 
-![ARP 应答（单播）](broken-reference)
+![ARP 应答（单播）](../.gitbook/assets/ARP应答.png)
 
 A 收到 B 的 ARP 应答后，知道了 B 的 MAC 地址，就可以给 B 发送消息了。同时 A 会将 B 的MAC 地址保存下来，以便下次再给 B 发消息的时候使用，这个叫做 ARP 缓存，在 Windows 和 Linux 上都可以通过 `arp -a` 这条命令查看当前系统的 ARP 缓存。ARP 缓存有一定的有效期，不同的系统有效期不一样，过了有效期之后，当 A 需要再次给 B 发消息的时候，A 会重新广播 ARP 请求，来询问 B 的 MAC 地址。
 
