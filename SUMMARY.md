@@ -22,3 +22,4 @@
 
 * [ARP 原理、攻击与欺骗](ji-suan-ji-wang-luo/arp-yuan-li-gong-ji-yu-qi-pian.md)
 * [如何防御 ARP 攻击与欺骗](ji-suan-ji-wang-luo/ru-he-fang-yu-arp-gong-ji-yu-qi-pian.md)
+* [DHCP 原理与 DHCP 攻击](ji-suan-ji-wang-luo/dhcp-yuan-li-yu-dhcp-gong-ji.md)
