@@ -174,7 +174,8 @@ int main(int argc, char** argv)
 
 void die(char* str){
     fprintf(stderr,"%s\n",str);
-    exit(1);}
+    exit(1);
+}
 
 
 }
