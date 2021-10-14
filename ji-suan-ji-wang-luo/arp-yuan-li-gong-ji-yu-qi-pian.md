@@ -175,11 +175,11 @@ int main(int argc, char** argv)
 void die(char* str){
     fprintf(stderr,"%s\n",str);
     exit(1);
-    
-    
+
+
 }
 
-void get_ip_addr(struct in_addr* in_addr,char* str){
+vvoid get_ip_addr(struct in_addr* in_addr,char* str){
 
     struct hostent *hostp;
 
